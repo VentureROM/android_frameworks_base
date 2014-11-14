@@ -17,6 +17,10 @@ package com.android.systemui.statusbar.phone;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+<<<<<<< HEAD
+=======
+import android.annotation.NonNull;
+>>>>>>> cd088f1... SystemUI: change back button to hide ime buttom with rotate animation.
 import android.app.ActivityManager;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -72,6 +76,14 @@ public class BackButtonDrawable extends Drawable {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    protected void onBoundsChange(Rect bounds) {
+        mWrappedDrawable.setBounds(bounds);
+    }
+
+    @Override
+>>>>>>> cd088f1... SystemUI: change back button to hide ime buttom with rotate animation.
     public void setAlpha(int alpha) {
         mWrappedDrawable.setAlpha(alpha);
         if (mCurrentAnimator != null) {
@@ -93,6 +105,19 @@ public class BackButtonDrawable extends Drawable {
         return mWrappedDrawable.getOpacity();
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public int getIntrinsicWidth() {
+        return mWrappedDrawable.getIntrinsicWidth();
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+        return mWrappedDrawable.getIntrinsicHeight();
+    }
+
+>>>>>>> cd088f1... SystemUI: change back button to hide ime buttom with rotate animation.
     public void setRotation(float rotation) {
         mRotation = rotation;
         invalidateSelf();
