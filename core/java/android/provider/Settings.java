@@ -2720,7 +2720,16 @@ public final class Settings {
         public static final String EGG_MODE = "egg_mode";
 
         /**
-         * Height of navigation bar buttons
+         * Status bar battery %
+         * 0: Hide the battery percentage
+         * 1: Display the battery percentage inside the icon
+         * 2: Display the battery percentage next to the icon
+         * @hide
+         */
+        public static final String STATUS_BAR_SHOW_BATTERY_PERCENT = "status_bar_show_battery_percent";
+
+        /**
+         *  Height of navigation bar buttons
          * @hide
          */
         public static final String NAVIGATION_BAR_HEIGHT = "navigation_bar_height";
@@ -2773,12 +2782,6 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_SHOW_WEATHER = "status_bar_show_weather";
-
-        /*
-         * Status bar battery %
-         * @hide
-         */
-        public static final String STATUS_BAR_SHOW_BATTERY_PERCENT = "status_bar_show_battery_percent";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -2845,18 +2848,8 @@ public final class Settings {
             POINTER_SPEED,
             VIBRATE_WHEN_RINGING,
             RINGTONE,
-<<<<<<< HEAD
-            NOTIFICATION_SOUND
-=======
             NOTIFICATION_SOUND,
-            SYSTEM_PROFILES_ENABLED,
-            PHONE_BLACKLIST_ENABLED,
-            PHONE_BLACKLIST_NOTIFY_ENABLED,
-            PHONE_BLACKLIST_PRIVATE_NUMBER_MODE,
-            PHONE_BLACKLIST_UNKNOWN_NUMBER_MODE,
-            PHONE_BLACKLIST_REGEX_ENABLED,
-            STATUS_BAR_SHOW_BATTERY_PERCENT,
->>>>>>> b6a35da... Fix battery % always showing at < 100%
+            STATUS_BAR_SHOW_BATTERY_PERCENT
         };
 
         /**

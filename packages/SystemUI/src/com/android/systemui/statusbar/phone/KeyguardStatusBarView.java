@@ -17,9 +17,14 @@
 package com.android.systemui.statusbar.phone;
 
 import android.animation.LayoutTransition;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -46,6 +51,8 @@ public class KeyguardStatusBarView extends RelativeLayout
     private boolean mKeyguardUserSwitcherShowing;
     private boolean mBatteryListening;
 
+    private boolean mShowBatteryText;
+
     private TextView mCarrierLabel;
     private View mSystemIconsSuperContainer;
     private MultiUserSwitch mMultiUserSwitch;
@@ -58,8 +65,25 @@ public class KeyguardStatusBarView extends RelativeLayout
     private int mSystemIconsSwitcherHiddenExpandedMargin;
     private Interpolator mFastOutSlowInInterpolator;
 
+    private Handler mHandler = new Handler();
+    private SettingsObserver mSettingsObserver;
+
+    private ContentObserver mObserver = new ContentObserver(new Handler()) {
+        public void onChange(boolean selfChange, Uri uri) {
+            loadShowBatteryTextSetting();
+            updateVisibilities();
+        }
+    };
+
     public KeyguardStatusBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mSettingsObserver = new SettingsObserver(mHandler);
+        loadShowBatteryTextSetting();
+    }
+
+    private void loadShowBatteryTextSetting() {
+        mShowBatteryText = 2 == Settings.System.getInt(getContext().getContentResolver(),
+                Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT, 0);
     }
 
     @Override
@@ -74,6 +98,7 @@ public class KeyguardStatusBarView extends RelativeLayout
         mFastOutSlowInInterpolator = AnimationUtils.loadInterpolator(getContext(),
                 android.R.interpolator.fast_out_slow_in);
         updateUserSwitcher();
+        updateVisibilities();
     }
 
     @Override
@@ -227,6 +252,7 @@ public class KeyguardStatusBarView extends RelativeLayout
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
+        mSettingsObserver.observe();
         if (visibility != View.VISIBLE) {
             mSystemIconsSuperContainer.animate().cancel();
             mMultiUserSwitch.animate().cancel();
@@ -237,5 +263,47 @@ public class KeyguardStatusBarView extends RelativeLayout
     @Override
     public boolean hasOverlappingRendering() {
         return false;
+    }
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+ 
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            update();
+        }
+ 
+        @Override
+        public void onChange(boolean selfChange) {
+            update();
+        }
+ 
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            update();
+        }
+ 
+        public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            updateVisibilities();
+        }
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                "status_bar_show_battery_percent"), false, mObserver);
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        if (mBatteryController != null) {
+            mBatteryController.removeStateChangedCallback(this);
+        }
     }
 }
