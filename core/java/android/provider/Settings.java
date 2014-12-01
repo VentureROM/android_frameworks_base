@@ -2856,6 +2856,17 @@ public final class Settings {
         public static final String BATTERY_SAVER_MODE_COLOR = "battery_save_mode_color";
 
         /**
+         * Whether to automatically unlock keyguard when correct PIN or Password
+         * is entered (Default 0, OFF)
+         *
+         * NOTE: Applies and is available in settings for PIN, SIM PIN
+         *       and Password lockscreen cases.
+         *
+         * @hide
+         */
+        public static final String QUICK_UNLOCK_ENABLED = "quick_unlock_enabled";
+
+        /**
          * Whether the user has enabled headsup (Default 1)
          * HeadsUp is enabled by default within its Settings.Global.HEADS_UP_NOTIFICATIONS_ENABLED
          * setting. Avoid changing low level implementations and use a System setting to
