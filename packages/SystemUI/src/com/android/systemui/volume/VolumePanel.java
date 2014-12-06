@@ -671,6 +671,46 @@ public class VolumePanel extends Handler {
             updateTimeoutDelay();
             updateZenPanelVisible();
         }
+        
+        if(Settings.System.getInt(mContext.getContentResolver(), Settings.System.SOUND_EXPANDED_PANEL, 0) == 1){
+        	mSliderPanel.removeAllViews();
+        	StreamControl sc = mStreamControls.get(AudioManager.STREAM_MUSIC);
+            mSliderPanel.addView(sc.group);
+            updateSlider(sc);
+        	sc = mStreamControls.get(AudioManager.STREAM_ALARM);
+            mSliderPanel.addView(sc.group);
+            updateSlider(sc);
+        	sc = mStreamControls.get(AudioManager.STREAM_RING);
+            mSliderPanel.addView(sc.group);
+            updateSlider(sc);
+        }
+        //addOtherVolumes();
+    }
+    
+    private void addOtherVolumes() {
+        for (int i = 0; i < STREAMS.length; i++) {
+            // Skip the phone specific ones and the active one
+            final int streamType = STREAMS[i].streamType;
+            /*
+            if (!STREAMS[i].show || streamType == mActiveStreamType) {
+                continue;
+            }
+            // Skip ring volume for non-phone devices
+            if (!mVoiceCapable && streamType == AudioManager.STREAM_RING) {
+                continue;
+            }
+            // Skip notification volume if linked with ring volume
+            if (mVoiceCapable &&
+                    streamType == AudioManager.STREAM_NOTIFICATION) {
+                continue;
+            }*/
+            if(streamType != AudioManager.STREAM_MUSIC || streamType != AudioManager.STREAM_NOTIFICATION || streamType != AudioManager.STREAM_RING){
+            	continue;
+            }
+            StreamControl sc = mStreamControls.get(streamType);
+            mSliderPanel.addView(sc.group);
+            updateSlider(sc);
+        }
     }
 
     private void updateSliderProgress(StreamControl sc, int progress) {
