@@ -684,35 +684,8 @@ public class VolumePanel extends Handler {
             mSliderPanel.addView(sc.group);
             updateSlider(sc);
         }
-        //addOtherVolumes();
     }
     
-    private void addOtherVolumes() {
-        for (int i = 0; i < STREAMS.length; i++) {
-            // Skip the phone specific ones and the active one
-            final int streamType = STREAMS[i].streamType;
-            /*
-            if (!STREAMS[i].show || streamType == mActiveStreamType) {
-                continue;
-            }
-            // Skip ring volume for non-phone devices
-            if (!mVoiceCapable && streamType == AudioManager.STREAM_RING) {
-                continue;
-            }
-            // Skip notification volume if linked with ring volume
-            if (mVoiceCapable &&
-                    streamType == AudioManager.STREAM_NOTIFICATION) {
-                continue;
-            }*/
-            if(streamType != AudioManager.STREAM_MUSIC || streamType != AudioManager.STREAM_NOTIFICATION || streamType != AudioManager.STREAM_RING){
-            	continue;
-            }
-            StreamControl sc = mStreamControls.get(streamType);
-            mSliderPanel.addView(sc.group);
-            updateSlider(sc);
-        }
-    }
-
     private void updateSliderProgress(StreamControl sc, int progress) {
         final boolean isRinger = isNotificationOrRing(sc.streamType);
         if (isRinger && mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
