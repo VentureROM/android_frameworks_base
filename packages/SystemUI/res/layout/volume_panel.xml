@@ -20,20 +20,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-     <LinearLayout
-            android:id="@+id/slider_panel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="@color/system_secondary_color"
-            android:paddingTop="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:clipChildren="false"
-            >
-            <!-- Sliders go here -->
-        </LinearLayout>
+    <FrameLayout
+        android:id="@+id/slider_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/system_secondary_color"
+        android:paddingTop="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:clipChildren="false" />
 
      <include
         android:layout_width="match_parent"

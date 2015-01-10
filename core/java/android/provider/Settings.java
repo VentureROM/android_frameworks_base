@@ -2432,11 +2432,6 @@ public final class Settings {
          */
         public static final String HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY =
                 "hide_rotation_lock_toggle_for_accessibility";
-        
-        /**
-         * Whether to display a expanded sound panel.
-         */
-        public static final String SOUND_EXPANDED_PANEL = "sound_expanded_panel";
 
         /**
          * Whether the phone vibrates when it is ringing due to an incoming call. This will

@@ -672,21 +672,8 @@ public class VolumePanel extends Handler {
             updateTimeoutDelay();
             updateZenPanelVisible();
         }
-        
-        if(Settings.System.getInt(mContext.getContentResolver(), Settings.System.SOUND_EXPANDED_PANEL, 0) == 1){
-        	mSliderPanel.removeAllViews();
-        	StreamControl sc = mStreamControls.get(AudioManager.STREAM_MUSIC);
-            mSliderPanel.addView(sc.group);
-            updateSlider(sc);
-        	sc = mStreamControls.get(AudioManager.STREAM_ALARM);
-            mSliderPanel.addView(sc.group);
-            updateSlider(sc);
-        	sc = mStreamControls.get(AudioManager.STREAM_RING);
-            mSliderPanel.addView(sc.group);
-            updateSlider(sc);
-        }
     }
-    
+
     private void updateSliderProgress(StreamControl sc, int progress) {
         final boolean isRinger = isNotificationOrRing(sc.streamType);
         if (isRinger && mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
