@@ -2267,12 +2267,6 @@ public final class Settings {
         public static final String NOTIFICATION_SOUND = "notification_sound";
 
         /**
-         * Show the pending notification counts as overlays on the status bar
-         * @hide
-         */
-        public static final String SYSTEM_PROFILES_ENABLED = "system_profiles_enabled";
-
-        /**
          * A {@link Uri} that will point to the current default notification
          * sound at any given time.
          *
@@ -2945,8 +2939,7 @@ public final class Settings {
             RINGTONE,
             NOTIFICATION_SOUND,
             STATUS_BAR_BATTERY_STYLE,
-            STATUS_BAR_SHOW_BATTERY_PERCENT,
-            SYSTEM_PROFILES_ENABLED
+            STATUS_BAR_SHOW_BATTERY_PERCENT
         };
 
         /**
@@ -4589,12 +4582,6 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_MOBILE_DATA_TRANSITION_WAKELOCK_TIMEOUT_MS =
                 Global.WIFI_MOBILE_DATA_TRANSITION_WAKELOCK_TIMEOUT_MS;
-
-        /**
-         * Whether the Wimax should be on.  Only the WiMAX service should touch this.
-         * @hide
-         */
-        public static final String WIMAX_ON = "wimax_on";
 
         /**
          * Whether background data usage is allowed.

@@ -21,8 +21,6 @@ import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Profile;
-import android.app.ProfileManager;
 import android.app.SearchManager;
 import android.app.StatusBarManager;
 import android.content.BroadcastReceiver;
@@ -170,7 +168,7 @@ public class KeyguardViewMediator extends SystemUI {
     private AudioManager mAudioManager;
     private StatusBarManager mStatusBarManager;
     private boolean mSwitchingUser;
-    private ProfileManager mProfileManager;
+
     private boolean mSystemReady;
     private boolean mBootCompleted;
     private boolean mBootSendUserPresent;
@@ -482,7 +480,7 @@ public class KeyguardViewMediator extends SystemUI {
         mUserManager = (UserManager) mContext.getSystemService(Context.USER_SERVICE);
         mShowKeyguardWakeLock = mPM.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "show keyguard");
         mShowKeyguardWakeLock.setReferenceCounted(false);
-        mProfileManager = (ProfileManager) mContext.getSystemService(Context.PROFILE_SERVICE);
+
         mContext.registerReceiver(mBroadcastReceiver, new IntentFilter(DELAYED_KEYGUARD_ACTION));
 
         mKeyguardDisplayManager = new KeyguardDisplayManager(mContext);
@@ -687,33 +685,13 @@ public class KeyguardViewMediator extends SystemUI {
     }
 
     private void maybeSendUserPresentBroadcast() {
-        if (mSystemReady && isKeyguardDisabled()
-                && !mUserManager.isUserSwitcherEnabled()) {
+        if (mSystemReady && mLockPatternUtils.isLockScreenDisabled()) {
             // Lock screen is disabled because the user has set the preference to "None".
             // In this case, send out ACTION_USER_PRESENT here instead of in
             // handleKeyguardDone()
             sendUserPresentBroadcast();
         }
     }
-
-    private boolean isKeyguardDisabled() {
-        if (!mExternallyEnabled) {
-            if (DEBUG) Log.d(TAG, "isKeyguardDisabled: keyguard is disabled externally");
-            return true;
-        }
-        if (mLockPatternUtils.isLockScreenDisabled() && mUserManager.getUsers(true).size() == 1) {
-            if (DEBUG) Log.d(TAG, "isKeyguardDisabled: keyguard is disabled by setting");
-            return true;
-        }
-        Profile profile = mProfileManager.getActiveProfile();
-        if (profile != null) {
-            if (profile.getScreenLockMode() == Profile.LockMode.DISABLE) {
-                if (DEBUG) Log.d(TAG, "isKeyguardDisabled: keyguard is disabled by profile");
-                return true;
-            }
-         }
-        return false;
-     }
 
     /**
      * A dream started.  We should lock after the usual screen-off lock timeout but only
@@ -940,7 +918,7 @@ public class KeyguardViewMediator extends SystemUI {
             return;
         }
 
-        if (isKeyguardDisabled() && !lockedOrMissing) {
+        if (mLockPatternUtils.isLockScreenDisabled() && !lockedOrMissing) {
             if (DEBUG) Log.d(TAG, "doKeyguard: not showing because lockscreen is off");
             return;
         }
