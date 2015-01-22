@@ -2095,16 +2095,4 @@
 
   <!-- Proximity check timeout -->
   <java-symbol type="integer" name="config_proximityCheckTimeout" />
-
-  <java-symbol name="reboot_confirm" type="string" />
-  <java-symbol name="reboot_title" type="string" />
-  <java-symbol name="global_action_reboot" type="string" />
-
-  <!-- Power menu reboot recovery -->
-  <java-symbol name="ic_lock_power_rebootrecovery" type="drawable" />
-  <java-symbol name="global_action_rebootrecovery" type="string" />
-
-  <!-- Power menu reboot bootloader -->
-  <java-symbol name="ic_lock_power_rebootbootloader" type="drawable" />
-  <java-symbol name="global_action_rebootbootloader" type="string" />
 </resources>

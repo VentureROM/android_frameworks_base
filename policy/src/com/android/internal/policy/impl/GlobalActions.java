@@ -37,7 +37,6 @@ import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
-import android.os.IPowerManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -101,8 +100,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private static final String GLOBAL_ACTION_KEY_USERS = "users";
     private static final String GLOBAL_ACTION_KEY_SETTINGS = "settings";
     private static final String GLOBAL_ACTION_KEY_LOCKDOWN = "lockdown";
-    private static final String GLOBAL_ACTION_KEY_REBOOTRECOVERY = "rebootrecovery";
-    private static final String GLOBAL_ACTION_KEY_REBOOTBOOTLOADER = "rebootbootloader";
 
     private final Context mContext;
     private final WindowManagerFuncs mWindowManagerFuncs;
@@ -275,10 +272,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             }
             if (GLOBAL_ACTION_KEY_POWER.equals(actionKey)) {
                 mItems.add(new PowerAction());
-            } else if (GLOBAL_ACTION_KEY_REBOOTRECOVERY.equals(actionKey)) {
-                mItems.add(new RebootRecoveryAction());
-            } else if (GLOBAL_ACTION_KEY_REBOOTBOOTLOADER.equals(actionKey)) {
-                mItems.add(new RebootBootloaderAction());
             } else if (GLOBAL_ACTION_KEY_AIRPLANE.equals(actionKey)) {
                 mItems.add(mAirplaneModeOn);
             } else if (GLOBAL_ACTION_KEY_BUGREPORT.equals(actionKey)) {
@@ -362,65 +355,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         public void onPress() {
             // shutdown by making sure radio and power are handled accordingly.
             mWindowManagerFuncs.shutdown(false /* confirm */);
-        }
-    }
-
-
-    private final class RebootRecoveryAction extends SinglePressAction {
-        private RebootRecoveryAction() {
-            super(com.android.internal.R.drawable.ic_lock_power_rebootrecovery,
-                    R.string.global_action_rebootrecovery);
-        }
-
-        @Override
-        public boolean showDuringKeyguard() {
-            return true;
-        }
-
-        @Override
-        public boolean showBeforeProvisioning() {
-            return true;
-        }
-
-        @Override
-        public void onPress() {
-            try {
-                IPowerManager powermanager = IPowerManager.Stub.asInterface(ServiceManager
-                        .getService(Context.POWER_SERVICE));
-                powermanager.reboot(true, "recovery", false);
-            } catch (RemoteException e) {
-                Log.e(TAG, "PowerManager service died!", e);
-                return;
-            }
-        }
-    }
-
-    private final class RebootBootloaderAction extends SinglePressAction {
-        private RebootBootloaderAction() {
-            super(com.android.internal.R.drawable.ic_lock_power_rebootbootloader,
-                    R.string.global_action_rebootbootloader);
-        }
-
-        @Override
-        public boolean showDuringKeyguard() {
-            return true;
-        }
-
-        @Override
-        public boolean showBeforeProvisioning() {
-            return true;
-        }
-
-        @Override
-        public void onPress() {
-            try {
-                IPowerManager powermanager = IPowerManager.Stub.asInterface(ServiceManager
-                        .getService(Context.POWER_SERVICE));
-                powermanager.reboot(true, "bootloader", false);
-            } catch (RemoteException e) {
-                Log.e(TAG, "PowerManager service died!", e);
-                return;
-            }
         }
     }
 
@@ -1129,7 +1063,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     }
 
     /**
-     * Change the airplane mode system setting  
+     * Change the airplane mode system setting
      */
     private void changeAirplaneModeSystemSetting(boolean on) {
         Settings.Global.putInt(
