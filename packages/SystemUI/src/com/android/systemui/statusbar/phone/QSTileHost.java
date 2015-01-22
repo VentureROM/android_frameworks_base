@@ -41,6 +41,12 @@ import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocationTile;
+<<<<<<< HEAD
+=======
+import com.android.systemui.qs.tiles.NfcTile;
+import com.android.systemui.qs.tiles.NotificationsTile;
+import com.android.systemui.qs.tiles.ProfilesTile;
+>>>>>>> a513c4a... SystemUI: add NFC tile
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.WifiTile;
 import com.android.systemui.settings.CurrentUserTracker;
@@ -270,6 +276,8 @@ public class QSTileHost implements QSTile.Host {
                 return new CastTile(this);
             case QSConstants.TILE_HOTSPOT:
                 return new HotspotTile(this);
+            case QSConstants.TILE_NFC:
+                return new NfcTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
