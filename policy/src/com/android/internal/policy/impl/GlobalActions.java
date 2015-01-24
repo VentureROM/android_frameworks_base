@@ -626,7 +626,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 return;
             }
             ComponentName cn = new ComponentName("com.android.systemui",
-                    "com.android.systemui.du.screenrecord.TakeScreenrecordService");
+                    "com.android.systemui.venture.screenrecord.TakeScreenrecordService");
             Intent intent = new Intent();
             intent.setComponent(cn);
             ServiceConnection conn = new ServiceConnection() {
