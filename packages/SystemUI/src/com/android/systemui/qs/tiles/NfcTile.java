@@ -51,11 +51,6 @@ public class NfcTile extends QSTile<QSTile.BooleanState> {
         toggleState();
     }
 
-    @Override
-    protected void handleLongClick() {
-        mHost.startSettingsActivity(new Intent("android.settings.NFC_SETTINGS"));
-    }
-
     protected void toggleState() {
         int state = getNfcState();
         switch (state) {

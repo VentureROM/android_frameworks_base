@@ -190,7 +190,7 @@ public class LocationTile extends QSTile<QSTile.BooleanState> {
 
         @Override
         public int getTitle() {
-            return R.string.quick_settings_location_detail_title;
+            return R.string.quick_settings_location_label;
         }
 
         @Override

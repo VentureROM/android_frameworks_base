@@ -2119,7 +2119,6 @@ public abstract class BaseStatusBar extends SystemUI implements
                 && keyguard.isInputRestricted();
 
         boolean interrupt = (isFullscreen || (isHighPriority && isNoisy)
-                && keyguard.isInputRestricted()
                 || asHeadsUp == Notification.HEADS_UP_REQUESTED)
                 && isAllowed
                 && !accessibilityForcesLaunch
