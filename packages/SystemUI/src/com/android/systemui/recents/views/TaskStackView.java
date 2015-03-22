@@ -21,6 +21,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,6 +30,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
+
 import com.android.systemui.R;
 import com.android.systemui.recents.Constants;
 import com.android.systemui.recents.RecentsConfiguration;
@@ -477,7 +480,7 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
 
         Task t = mStack.getTasks().get(mFocusedTaskIndex);
         TaskView tv = getChildViewForTask(t);
-        tv.dismissTask();
+        tv.dismissTask(0L);
     }
 
     private boolean dismissAll() {
@@ -498,12 +501,15 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                 }
 
                 // Remove visible TaskViews
+                long dismissDelay = 0;
                 int childCount = getChildCount();
+                int delay = mConfig.taskViewRemoveAnimDuration / childCount;
                 if (!dismissAll() && childCount > 1) childCount--;
                 for (int i = 0; i < childCount; i++) {
                     TaskView tv = (TaskView) getChildAt(i);
                     tasks.remove(tv.getTask());
-                    tv.dismissTask();
+                    tv.dismissTask(dismissDelay);
+                    dismissDelay += delay;
                 }
 
                 int size = tasks.size();
@@ -516,6 +522,12 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                             mStack.removeTask(t);
                         }
                     }
+                }
+
+                // And remove all the excluded or all the other tasks
+                SystemServicesProxy ssp = RecentsTaskLoader.getInstance().getSystemServicesProxy();
+                if (size > 0) {
+                    ssp.removeAllUserTask(UserHandle.myUserId());
                 }
             }
         });
@@ -1117,7 +1129,7 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                         public void run() {
                             mStack.removeTask(t);
                         }
-                    });
+                    }, 0L);
                 } else {
                     // Otherwise, remove the task from the stack immediately
                     mStack.removeTask(t);
