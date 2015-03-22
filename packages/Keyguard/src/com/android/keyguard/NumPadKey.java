@@ -134,6 +134,8 @@ public class NumPadKey extends ViewGroup {
                 }
             }
         }
+        setBackground(mContext.getDrawable(R.drawable.ripple_drawable));
+        setContentDescription(mDigitText.getText().toString());
     }
 
 
