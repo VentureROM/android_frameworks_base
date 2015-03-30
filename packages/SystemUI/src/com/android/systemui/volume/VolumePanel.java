@@ -753,7 +753,7 @@ public class VolumePanel extends Handler implements DemoMode {
             mSliderPanel.addView(active.group);
             mActiveStreamType = activeStreamType;
             active.group.setVisibility(View.VISIBLE);
-            updateSlider(active);
+            updateSlider(active, true /*forceReloadIcon*/);
         }
         updateTimeoutDelay();
         updateZenPanelVisible();
@@ -774,7 +774,7 @@ public class VolumePanel extends Handler implements DemoMode {
                     mSliderPanel.addView(control.group);
                     control.group.setVisibility(View.VISIBLE);
                     control.expandPanel.setVisibility(View.GONE);
-                    updateSlider(control);
+                    updateSlider(control, true /*forceReloadIcon*/);
                 }
             }
         }
@@ -789,7 +789,7 @@ public class VolumePanel extends Handler implements DemoMode {
                 if (control != null && control.streamType != mActiveStreamType) {
                     control.group.setVisibility(View.GONE);
                     control.expandPanel.setVisibility(View.GONE);
-                    updateSlider(control);
+                    updateSlider(control, true);
                 }
             }
         }
@@ -965,6 +965,15 @@ public class VolumePanel extends Handler implements DemoMode {
     private void showSilentHint() {
         if (mZenPanel != null) {
             mZenPanel.showSilentHint();
+        }
+    }
+
+    private void showVibrateHint() {
+        final StreamControl active = mStreamControls.get(mActiveStreamType);
+        if (active != null) {
+            if (!hasMessages(MSG_VIBRATE)) {
+                sendEmptyMessageDelayed(MSG_VIBRATE, VIBRATE_DELAY);
+            }
         }
     }
 

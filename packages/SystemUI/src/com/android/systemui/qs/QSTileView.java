@@ -180,7 +180,6 @@ public class QSTileView extends ViewGroup {
         if (changed) {
             recreateLabel();
         }
-        Drawable mTileBackground = getTileBackground();
         if (mTileBackground instanceof RippleDrawable) {
             setRipple((RippleDrawable) mTileBackground);
         }

@@ -341,28 +341,6 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         }
     }
 
-    public void startFABanimation() {
-        // Animate the action button in
-        mFloatingButton = ((View)getParent()).findViewById(R.id.floating_action_button);
-        mFloatingButton.animate().alpha(1f)
-                .setStartDelay(mConfig.taskBarEnterAnimDelay)
-                .setDuration(mConfig.taskBarEnterAnimDuration)
-                .setInterpolator(mConfig.fastOutLinearInInterpolator)
-                .withLayer()
-                .start();
-    }
-
-    public void endFABanimation() {
-        // Animate the action button away
-        mFloatingButton = ((View)getParent()).findViewById(R.id.floating_action_button);
-        mFloatingButton.animate().alpha(0f)
-                .setStartDelay(0)
-                .setDuration(mConfig.taskBarExitAnimDuration)
-                .setInterpolator(mConfig.fastOutLinearInInterpolator)
-                .withLayer()
-                .start();
-    }
-
     private boolean dismissAll() {
         return Settings.System.getInt(mContext.getContentResolver(),
             Settings.System.RECENTS_CLEAR_ALL_DISMISS_ALL, 1) == 1;
