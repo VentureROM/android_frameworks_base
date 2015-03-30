@@ -35,11 +35,6 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
-<<<<<<< HEAD
-import android.widget.LinearLayout;
-import android.widget.ImageButton;
-=======
->>>>>>> parent of a9fb857... Frameworks: Slim heads up customizations for LP (1/2)
 
 import com.android.systemui.ExpandHelper;
 import com.android.systemui.Gefingerpoken;
@@ -49,11 +44,8 @@ import com.android.systemui.statusbar.ExpandableView;
 import com.android.systemui.statusbar.NotificationData;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 
-=======
->>>>>>> parent of a9fb857... Frameworks: Slim heads up customizations for LP (1/2)
 public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.Callback, ExpandHelper.Callback,
         ViewTreeObserver.OnComputeInternalInsetsListener {
     private static final String TAG = "HeadsUpNotificationView";
