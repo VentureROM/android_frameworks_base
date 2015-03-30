@@ -255,17 +255,6 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
         mContentHolder = (ViewGroup) findViewById(R.id.content_holder);
         mContentHolder.setOutlineProvider(CONTENT_HOLDER_OUTLINE_PROVIDER);
 
-<<<<<<< HEAD
-        mSnoozeButton = (ImageButton) findViewById(R.id.heads_up_snooze_button);
-        if (mSnoozeButton != null) {
-            mSnoozeButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    mBar.snoozeHeadsUp();
-                }
-            });
-            mSnoozeButton.setVisibility(mSnoozeButtonVisibility ? View.VISIBLE : View.GONE);
-        }
-
         mSnoozeLengthMs = Settings.Global.getInt(mContext.getContentResolver(),
                 SETTING_HEADS_UP_SNOOZE_LENGTH_MS, mDefaultSnoozeLengthMs);
         mSettingsObserver = new ContentObserver(getHandler()) {
@@ -284,8 +273,6 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
                 mSettingsObserver);
         if (DEBUG) Log.v(TAG, "mSnoozeLengthMs = " + mSnoozeLengthMs);
 
-=======
->>>>>>> parent of a9fb857... Frameworks: Slim heads up customizations for LP (1/2)
         if (mHeadsUp != null) {
             // whoops, we're on already!
             showNotification(mHeadsUp);
