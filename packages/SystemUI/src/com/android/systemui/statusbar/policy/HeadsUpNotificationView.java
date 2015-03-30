@@ -27,7 +27,6 @@ import android.provider.Settings;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.animation.Interpolator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -36,8 +35,11 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
+<<<<<<< HEAD
 import android.widget.LinearLayout;
 import android.widget.ImageButton;
+=======
+>>>>>>> parent of a9fb857... Frameworks: Slim heads up customizations for LP (1/2)
 
 import com.android.systemui.ExpandHelper;
 import com.android.systemui.Gefingerpoken;
@@ -47,8 +49,11 @@ import com.android.systemui.statusbar.ExpandableView;
 import com.android.systemui.statusbar.NotificationData;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
+=======
+>>>>>>> parent of a9fb857... Frameworks: Slim heads up customizations for LP (1/2)
 public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.Callback, ExpandHelper.Callback,
         ViewTreeObserver.OnComputeInternalInsetsListener {
     private static final String TAG = "HeadsUpNotificationView";
@@ -71,10 +76,6 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
 
     private long mStartTouchTime;
     private ViewGroup mContentHolder;
-    private ViewGroup mBelowContentContainer;
-    private ImageButton mSnoozeButton;
-    private boolean mIsSnoozeButtonNowVisible;
-    private boolean mSnoozeButtonVisibility;
 
     private int mSnoozeLengthMs;
     private ContentObserver mSettingsObserver;
@@ -98,31 +99,16 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
     }
 
     public void updateResources() {
-        final int width = getResources().getDimensionPixelSize(R.dimen.notification_panel_width);
-        final int gravity = getResources().getInteger(R.integer.notification_panel_layout_gravity);
-        if (mBelowContentContainer != null) {
-            final LayoutParams lp = (LayoutParams) mBelowContentContainer.getLayoutParams();
-            lp.width = width;
-            lp.gravity = gravity;
-            mBelowContentContainer.setLayoutParams(lp);
-        }
         if (mContentHolder != null) {
             final LayoutParams lp = (LayoutParams) mContentHolder.getLayoutParams();
-            lp.width = width;
-            lp.gravity = gravity;
+            lp.width = getResources().getDimensionPixelSize(R.dimen.notification_panel_width);
+            lp.gravity = getResources().getInteger(R.integer.notification_panel_layout_gravity);
             mContentHolder.setLayoutParams(lp);
         }
     }
 
     public void setBar(PhoneStatusBar bar) {
         mBar = bar;
-    }
-
-    public void setSnoozeVisibility(boolean show) {
-        mSnoozeButtonVisibility = show;
-        if (mSnoozeButton != null) {
-            mSnoozeButton.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
     }
 
     public ViewGroup getHolder() {
@@ -159,11 +145,6 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
 
             mSwipeHelper.snapChild(mContentHolder, 1f);
             mStartTouchTime = SystemClock.elapsedRealtime() + mTouchSensitivityDelay;
-
-            if (mSnoozeButton != null) {
-                mSnoozeButton.setAlpha(mMaxAlpha);
-                mIsSnoozeButtonNowVisible = true;
-            }
 
             mHeadsUp.setInterruption();
 
@@ -279,11 +260,10 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
         int minHeight = getResources().getDimensionPixelSize(R.dimen.notification_min_height);
         int maxHeight = getResources().getDimensionPixelSize(R.dimen.notification_max_height);
 
-        mBelowContentContainer = (ViewGroup) findViewById(R.id.below_content_container);
-
         mContentHolder = (ViewGroup) findViewById(R.id.content_holder);
         mContentHolder.setOutlineProvider(CONTENT_HOLDER_OUTLINE_PROVIDER);
 
+<<<<<<< HEAD
         mSnoozeButton = (ImageButton) findViewById(R.id.heads_up_snooze_button);
         if (mSnoozeButton != null) {
             mSnoozeButton.setOnClickListener(new View.OnClickListener() {
@@ -312,6 +292,8 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
                 mSettingsObserver);
         if (DEBUG) Log.v(TAG, "mSnoozeLengthMs = " + mSnoozeLengthMs);
 
+=======
+>>>>>>> parent of a9fb857... Frameworks: Slim heads up customizations for LP (1/2)
         if (mHeadsUp != null) {
             // whoops, we're on already!
             showNotification(mHeadsUp);
@@ -372,36 +354,6 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
         mSwipeHelper.setPagingTouchSlop(pagingTouchSlop);
     }
 
-    /**
-     * Animate the snooze button to a new visibility.
-     *
-     * @param nowVisible should it now be visible
-     */
-    private void animateSnoozeButton(boolean nowVisible) {
-        if (mSnoozeButton == null) {
-            return;
-        }
-        mSnoozeButton.animate().cancel();
-        if (!mSnoozeButtonVisibility) {
-            return;
-        }
-        if (nowVisible != mIsSnoozeButtonNowVisible) {
-            mIsSnoozeButtonNowVisible = nowVisible;
-            // Animate snooze button
-            float endValue = nowVisible ? mMaxAlpha : 0.0f;
-            Interpolator interpolator;
-            if (nowVisible) {
-                interpolator = PhoneStatusBar.ALPHA_IN;
-            } else {
-                interpolator = PhoneStatusBar.ALPHA_OUT;
-            }
-            mSnoozeButton.animate()
-                    .alpha(endValue)
-                    .setInterpolator(interpolator)
-                    .setDuration(260);
-        }
-    }
-
     // ExpandHelper.Callback methods
 
     @Override
@@ -456,23 +408,18 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
     }
 
     @Override
-    public void onChildDismissed(View v, boolean direction) {
-        if (DEBUG)  Log.v(TAG, "User swiped heads up to dismiss");
-        mBar.onHeadsUpDismissed(direction);
-        if (mSnoozeButton != null) {
-            mSnoozeButton.animate().cancel();
-        }
+    public void onChildDismissed(View v) {
+        Log.v(TAG, "User swiped heads up to dismiss");
+        mBar.onHeadsUpDismissed();
     }
 
     @Override
     public void onBeginDrag(View v) {
-        animateSnoozeButton(false);
     }
 
     @Override
     public void onDragCancelled(View v) {
         mContentHolder.setAlpha(mMaxAlpha); // sometimes this isn't quite reset
-        animateSnoozeButton(true);
     }
 
     @Override
@@ -546,9 +493,6 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
                     if (!mConsuming && daX < daY && daY > mTouchSlop) {
                         snooze();
                         if (dY > 0) {
-                            // User want to swipe in notification panel. Allow it
-                            // and hide the headsup notification so that the user
-                            // can see it now in the notification panel.
                             if (DEBUG_EDGE_SWIPE) Log.d(TAG, "found an open");
                             mBar.animateExpandNotificationsPanel();
                         }
