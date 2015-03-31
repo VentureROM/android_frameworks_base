@@ -79,8 +79,8 @@ public class FlashlightTile extends QSTile<QSTile.BooleanState> implements
             mWasLastOn = SystemClock.uptimeMillis();
         }
 
-        if (arg instanceof Boolean) {
-            state.value = (Boolean) arg;
+        if (arg instanceof UserBoolean) {
+            state.value = ((UserBoolean) arg).value;
         }
 
         if (!state.value && mWasLastOn != 0) {
@@ -96,7 +96,9 @@ public class FlashlightTile extends QSTile<QSTile.BooleanState> implements
         // the camera is not available while it is being used for the flashlight.
         state.visible = mWasLastOn != 0 || mFlashlightController.isAvailable();
         state.label = mHost.getContext().getString(R.string.quick_settings_flashlight_label);
-        state.icon = state.value ? mEnable : mDisable;
+        final AnimationIcon icon = state.value ? mEnable : mDisable;
+        icon.setAllowAnimation(arg instanceof UserBoolean && ((UserBoolean) arg).userInitiated);
+        state.icon = icon;
         int onOrOffId = state.value
                 ? R.string.accessibility_quick_settings_flashlight_on
                 : R.string.accessibility_quick_settings_flashlight_off;
