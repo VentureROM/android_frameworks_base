@@ -64,6 +64,7 @@ import android.os.Parcelable;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.os.UserHandle;
+import android.provider.Settings;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -943,6 +944,7 @@ public class Activity extends ContextThemeWrapper
         if (mVoiceInteractor != null) {
             mVoiceInteractor.attachActivity(this);
         }
+
         mCalled = true;
     }
 
@@ -2137,6 +2139,16 @@ public class Activity extends ContextThemeWrapper
         mWindow.setDefaultLogo(mActivityInfo.getLogoResource());
     }
 
+    public void setNightMode(int layoutResID) {
+        String layoutResString = getResources().getResourceName(layoutResID);
+        String layoutResStringResult = layoutResString.split("/")[1];
+        int nightLayoutResID = getResources().getIdentifier("night_"+layoutResStringResult, "layout", getPackageName());
+
+
+        if ( (Settings.System.getInt(getWindow().getContext().getContentResolver(), "night_mode_pref", 0) ) == 1 && nightLayoutResID != 0) getWindow().setContentView(nightLayoutResID);
+        else getWindow().setContentView(layoutResID);
+    }
+
     /**
      * Set the activity content from a layout resource.  The resource will be
      * inflated, adding all top-level views to the activity.
@@ -2147,7 +2159,7 @@ public class Activity extends ContextThemeWrapper
      * @see #setContentView(android.view.View, android.view.ViewGroup.LayoutParams)
      */
     public void setContentView(int layoutResID) {
-        getWindow().setContentView(layoutResID);
+        setNightMode(layoutResID);
         initWindowDecorActionBar();
     }
 
